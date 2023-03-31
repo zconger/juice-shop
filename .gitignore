@@ -59,3 +59,7 @@ config/*.yml
 !config/unsafe.yml
 !config/tutorial.yml
 !config/oss.yml
+
+cypress/videos/e2e
+cypress/screenshots/e2e/
+/malware

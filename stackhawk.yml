@@ -1,0 +1,44 @@
+app:
+  applicationId: 2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b
+  env: Cypress
+  host: http://localhost:3000
+  excludePaths:
+    - ".*socket\\.io.*"
+    - ".*\\.png"
+    - ".*\\.jpeg"
+    - ".*\\.jpg"
+    - ".*\\.woff"
+    - ".*\\.woff2"
+    - ".*\\.ttf"
+    - ".*\\.ico"
+  authentication:
+    external:
+      type: COOKIE
+      value: "token=${AUTH_TOKEN}"
+    cookieAuthorization:
+      cookieNames:
+        - token
+    testPath:
+      type: BODY
+      path: /rest/user/whoami
+      success: ".*email.*"
+      requestMethod: GET
+    loggedInIndicator: ".*"
+    loggedOutIndicator: "^$"
+
+hawk:
+  spider:
+    ajax: false
+    base: false
+    custom:
+      command: "npx cypress run"
+      logOutputToForeground: true
+      environment:
+        NO_PROXY: "<-loopback>"
+
+hawkAddOn:
+  replacer:
+    rules:
+      - matchString: Authorization
+        replaceOnly: false
+        replacement: "Bearer ${AUTH_TOKEN}"
