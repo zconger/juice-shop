@@ -14,7 +14,7 @@ app:
   authentication:
     external:
       type: COOKIE
-      value: "token=${AUTH_TOKEN}"
+      value: "token=${JS_AUTH_TOKEN}"
     cookieAuthorization:
       cookieNames:
         - token
@@ -44,4 +44,4 @@ hawkAddOn:
     rules:
       - matchString: Authorization
         replaceOnly: false
-        replacement: "Bearer ${AUTH_TOKEN}"
+        replacement: "Bearer ${JS_AUTH_TOKEN}"

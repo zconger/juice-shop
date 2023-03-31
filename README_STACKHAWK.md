@@ -14,8 +14,8 @@ open http://localhost:3000
 #   username: test@test.com
 #   password: testtest
 
-# Fetch a JWT for test@test.com and export it as AUTH_TOKEN - will be used for StackHawk authenticated scanning
-source stackhawk_auth_token.sh
+# Fetch a JWT for test@test.com and export it as JS_AUTH_TOKEN - will be used for StackHawk authenticated scanning
+source ./stackhawk_auth_token.sh
 
 # Run HawkScan
 hawk scan
