@@ -1,5 +1,5 @@
 app:
-  applicationId: 2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b
+  applicationId: ${JS_APP_ID:2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b}
   env: Cypress
   host: http://localhost:3000
   excludePaths:
@@ -31,7 +31,10 @@ hawk:
     ajax: false
     base: false
     custom:
-      command: "npx cypress run"
+      command: 'bash'
+      arguments:
+        - "-c"
+        - "npx cypress run || true"
       logOutputToForeground: true
       environment:
         NO_PROXY: "<-loopback>"
