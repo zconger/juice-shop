@@ -1,12 +1,16 @@
 # Scanning with StackHawk
 
-Here's a quick rundown of 
+Here's a quick rundown of how to run a StackHawk scan against Juice Shop.
+
+This guide assumes that you have:
+ * Installed the [StackHawk CLI](https://docs.stackhawk.com/stackhawk-cli/)
+ * Exported your StackHawk API key as the environment variable `API_KEY`
 
 ```shell
-# Install dependencies
+# Install Juice Shop dependencies
 npm install
 
-# Run Juice Shop
+# Run Juice Shop in the background
 npm start &
 
 # Browse to juice shop at http://localhost:3000 and create the test user:
