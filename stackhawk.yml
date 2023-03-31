@@ -1,5 +1,5 @@
 app:
-  applicationId: ${JS_APP_ID:2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b}
+  applicationId: ${JS_APP_ID:48232faa-02d5-455f-b48b-a668b95c4b6d}
   env: Cypress
   host: http://localhost:3000
   excludePaths:
