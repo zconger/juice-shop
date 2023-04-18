@@ -6,7 +6,7 @@ Our test system for creating this document had the following specifications:
  * m6a.large EC2 instance
  * 2 vCPUs
  * 8 GB RAM
- * 16 GB disk
+ * 32 GB disk
  * Amazon Linux release 2023 (Amazon Linux)
 
 ## Install prerequisite software

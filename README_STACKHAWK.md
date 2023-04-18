@@ -15,6 +15,8 @@ This guide assumes that you have:
  * Exported your StackHawk API key as the environment variable `API_KEY`
  * Exported your Juice Shop App ID from StackHawk as `JS_APP_ID`
 
+> NOTE: Before scanning Juice Shop, you should start up a [`screen`](https://www.baeldung.com/linux/screen-command) session so that you can detach and re-attach to your session from your laptop. The scan may take 10 hours or longer to complete.
+
 Install Juice Shop dependencies
 ```shell
 npm install
