@@ -63,3 +63,4 @@ config/*.yml
 cypress/videos/e2e
 cypress/screenshots/e2e/
 /malware
+.env
