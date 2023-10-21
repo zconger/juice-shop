@@ -2,22 +2,39 @@ app:
   applicationId: ${JS_APP_ID:48232faa-02d5-455f-b48b-a668b95c4b6d}
   env: Cypress
   host: http://localhost:3000
-  excludePaths:
-    - ".*socket\\.io.*"
-    - ".*\\.png"
-    - ".*\\.jpeg"
-    - ".*\\.jpg"
-    - ".*\\.woff"
-    - ".*\\.woff2"
-    - ".*\\.ttf"
-    - ".*\\.ico"
+  sessionTokens:
+    - token
+#  excludePaths:
+#    - ".*socket\\.io.*"
+#    - ".*\\.png"
+#    - ".*\\.jpeg"
+#    - ".*\\.jpg"
+#    - ".*\\.woff"
+#    - ".*\\.woff2"
+#    - ".*\\.ttf"
+#    - ".*\\.ico"
   authentication:
-    external:
-      type: COOKIE
-      value: "token=${JS_AUTH_TOKEN}"
-    cookieAuthorization:
-      cookieNames:
-        - token
+    usernamePassword:
+      type: JSON
+      loginPagePath: /login
+      loginPath: /rest/user/login
+      usernameField: email
+      passwordField: password
+      scanUsername: "test@test.com"
+      scanPassword: "testtest"
+    tokenExtraction:
+      type: TOKEN_PATH
+      value: "authentication.token"
+    tokenAuthorization:
+      type: HEADER
+      value: Authorization
+      tokenType: Bearer
+#    external:
+#      type: COOKIE
+#      value: "token=${JS_AUTH_TOKEN}"
+#    cookieAuthorization:
+#      cookieNames:
+#        - token
     testPath:
       type: BODY
       path: /rest/user/whoami
@@ -31,17 +48,19 @@ hawk:
     ajax: false
     base: false
     custom:
+#      command: "false"
       command: 'bash'
       arguments:
         - "-c"
-        - "npx cypress run || true"
+        - "npx cypress run --headless"
+#        - "npx cypress run || true"
       logOutputToForeground: true
       environment:
         NO_PROXY: "<-loopback>"
 
-hawkAddOn:
-  replacer:
-    rules:
-      - matchString: Authorization
-        replaceOnly: false
-        replacement: "Bearer ${JS_AUTH_TOKEN}"
+#hawkAddOn:
+#  replacer:
+#    rules:
+#      - matchString: Authorization
+#        replaceOnly: false
+#        replacement: "Bearer ${JS_AUTH_TOKEN}"
