@@ -1,45 +1,36 @@
 app:
-  applicationId: ${JS_APP_ID:48232faa-02d5-455f-b48b-a668b95c4b6d}
+  applicationId: ${JS_APP_ID:2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b}
   env: Cypress
   host: http://localhost:3000
-  sessionTokens:
-    - token
-#  excludePaths:
-#    - ".*socket\\.io.*"
-#    - ".*\\.png"
-#    - ".*\\.jpeg"
-#    - ".*\\.jpg"
-#    - ".*\\.woff"
-#    - ".*\\.woff2"
-#    - ".*\\.ttf"
-#    - ".*\\.ico"
+  excludePaths:
+    - ".*socket\\.io.*"
+    - ".*\\.png"
+    - ".*\\.jpeg"
+    - ".*\\.jpg"
+    - ".*\\.woff"
+    - ".*\\.woff2"
+    - ".*\\.ttf"
+    - ".*\\.ico"
+    - "/rest/user/reset-password"
+    - "/rest/user/change-password.*"
+    - "/rest/2fa/setup"
+
   authentication:
-    usernamePassword:
-      type: JSON
-      loginPagePath: /login
-      loginPath: /rest/user/login
-      usernameField: email
-      passwordField: password
-      scanUsername: "test@test.com"
-      scanPassword: "testtest"
-    tokenExtraction:
-      type: TOKEN_PATH
-      value: "authentication.token"
-    tokenAuthorization:
-      type: HEADER
-      value: Authorization
-      tokenType: Bearer
-#    external:
-#      type: COOKIE
-#      value: "token=${JS_AUTH_TOKEN}"
-#    cookieAuthorization:
-#      cookieNames:
-#        - token
+    external:
+      values:
+        - type: COOKIE
+          value:
+            name: token
+            val: ${JS_AUTH_TOKEN}
+        - type: TOKEN
+          tokenType: Bearer
+          value:
+            name: Authorization
+            val: ${JS_AUTH_TOKEN}
     testPath:
       type: BODY
       path: /rest/user/whoami
       success: ".*email.*"
-      requestMethod: GET
     loggedInIndicator: ".*"
     loggedOutIndicator: "^$"
 
@@ -48,19 +39,10 @@ hawk:
     ajax: false
     base: false
     custom:
-#      command: "false"
       command: 'bash'
       arguments:
         - "-c"
-        - "npx cypress run --headless"
-#        - "npx cypress run || true"
+        - "npx cypress run --headless || true"
       logOutputToForeground: true
       environment:
         NO_PROXY: "<-loopback>"
-
-#hawkAddOn:
-#  replacer:
-#    rules:
-#      - matchString: Authorization
-#        replaceOnly: false
-#        replacement: "Bearer ${JS_AUTH_TOKEN}"
