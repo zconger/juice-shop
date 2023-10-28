@@ -1,0 +1,65 @@
+app:
+  applicationId: ${JS_APP_ID:2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b}
+  env: Cypress
+  host: http://localhost:3000
+  sessionTokens:
+    - JSESSIONID
+    - language
+    - continueCode
+    - welcomebanner_status
+    - cookieconsent_status
+    - token
+
+  excludePaths:
+    - ".*socket\\.io.*"
+    - ".*\\.png"
+    - ".*\\.jpeg"
+    - ".*\\.jpg"
+    - ".*\\.woff"
+    - ".*\\.woff2"
+    - ".*\\.ttf"
+    - ".*\\.ico"
+    - "/rest/user/reset-password"
+    - "/rest/user/change-password.*"
+    - "/rest/2fa/setup"
+
+  authentication:
+    script:
+      name: juice-shop-auth.kts
+      parameters:
+        authEndpoint: 'http://localhost:3000/rest/user/login'
+      credentials:
+        username: 'test@test.com'
+        password: testtest
+    sessionScript:
+      name: juice-shop-session.kts
+    testPath:
+      type: BODY
+      path: /rest/user/whoami
+      success: ".*email.*"
+    loggedInIndicator: ".*"
+    loggedOutIndicator: "^$"
+
+hawk:
+  spider:
+    ajax: false
+    base: false
+    custom:
+      command: 'bash'
+      arguments:
+        - "-c"
+        - "npx cypress run --headless || true"
+      logOutputToForeground: true
+      environment:
+        NO_PROXY: "<-loopback>"
+
+hawkAddOn:
+  scripts:
+    - name: juice-shop-auth.kts
+      path: hawkscripts
+      type: authentication
+      language: KOTLIN
+    - name: juice-shop-session.kts
+      path: hawkscripts
+      type: session
+      language: KOTLIN

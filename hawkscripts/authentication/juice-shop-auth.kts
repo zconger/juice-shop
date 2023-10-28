@@ -27,12 +27,12 @@ fun authenticate(
 
     val msg = helper.prepareMessage()
     msg.requestHeader = HttpRequestHeader(
-            HttpRequestHeader.GET,
+            HttpRequestHeader.POST,
             URI(authEndpoint, true),
             HttpHeader.HTTP11
     )
     msg.requestHeader.setHeader("Content-Type", "application/json")
-    msg.requestHeader.setHeader("Accept", "application/json")
+    msg.requestHeader.setHeader("Accept", "*/*")
     msg.requestHeader.setHeader("Cache-control", "no-cache")
     msg.requestBody = HttpRequestBody(authRequestBody)
     msg.requestHeader.contentLength = msg.requestBody.length()
