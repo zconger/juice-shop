@@ -25,6 +25,7 @@ fun authenticate(
 
     logger.info("Authentication URL: ${authEndpoint}")
 
+
     val msg = helper.prepareMessage()
     msg.requestHeader = HttpRequestHeader(
             HttpRequestHeader.POST,

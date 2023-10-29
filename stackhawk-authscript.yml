@@ -10,8 +10,10 @@ app:
     - cookieconsent_status
     - token
 
+  openApiConf:
+    filePath: swagger.yml
   excludePaths:
-    - ".*socket\\.io.*"
+#    - ".*socket\\.io.*"
     - ".*\\.png"
     - ".*\\.jpeg"
     - ".*\\.jpg"
@@ -42,13 +44,13 @@ app:
 
 hawk:
   spider:
-    ajax: false
-    base: false
+    ajax: true
+    base: true
     custom:
       command: 'bash'
       arguments:
         - "-c"
-        - "npx cypress run --headless || true"
+        - "npx cypress run --headless --quiet || true"
       logOutputToForeground: true
       environment:
         NO_PROXY: "<-loopback>"

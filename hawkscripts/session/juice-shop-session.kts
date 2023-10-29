@@ -1,44 +1,40 @@
+import net.sf.json.JSONObject
 import org.apache.log4j.LogManager
 import org.apache.log4j.Logger
+import org.openqa.selenium.devtools.v85.network.model.CookieParam
+import org.parosproxy.paros.network.HtmlParameter
 import org.zaproxy.zap.session.ScriptBasedSessionManagementMethodType
-import org.zaproxy.zap.extension.script.ScriptVars
+import kotlin.math.log
 
 val logger: Logger = LogManager.getLogger("Juice Shop Session")
+
 
 // This function is called after the authentication function to establish a session.
 // The sessionWrapper.httpMessage will contain the responseBody, responseHeader and requestingUser which can be used to
 // gather data pertaining to the authentication status such as cookies, tokens or data from the responseBody
 fun extractWebSession(sessionWrapper: ScriptBasedSessionManagementMethodType.SessionWrapper) {
+    logger.info("Creating JSON object from authN response.")
+    val authResponseObject = JSONObject.fromObject(sessionWrapper.httpMessage.responseBody.toString())
+    logger.info("Extracting authZ session token from authN response.")
+    val token = authResponseObject.getJSONObject("authentication").getString("token")
+    logger.info("Extracted authZ session token from authN response:\ntoken = $token")
 
-    var cookieIterator = 0
-    logger.info("Setting session cookies")
-    while (ScriptVars.getGlobalVars().containsKey("cookieName$cookieIterator")) {
-        // Change domain to match the domain of your site
-        val domain = "localhost"
-        val httpCookie = org.apache.commons.httpclient.Cookie(
-                domain,
-                ScriptVars.getGlobalVar("cookieName$cookieIterator"),
-                ScriptVars.getGlobalVar("cookieValue$cookieIterator")
-        )
-        logger.info("Adding session cookie ${httpCookie.name} wtih value ${httpCookie.value}" )
-        sessionWrapper.session.httpState.addCookie(httpCookie)
-        cookieIterator++
-    }
-
+    sessionWrapper.session.setValue("token", token)
 }
 
 // This function is called on each request allow the request to be modified before it is sent to the web application.
 fun processMessageToMatchSession(sessionWrapper: ScriptBasedSessionManagementMethodType.SessionWrapper) {
-    var tokenIterator = 0
-    logger.info("Setting token headers")
-    while (ScriptVars.getGlobalVars().containsKey("tokenName$tokenIterator")) {
-        logger.info("Adding session token ${ScriptVars.getGlobalVar("tokenName$tokenIterator")} with value ${  ScriptVars.getGlobalVar("tokenValue$tokenIterator")}" )
-        sessionWrapper.httpMessage.requestHeader.addHeader(
-                ScriptVars.getGlobalVar("tokenName$tokenIterator"),
-                ScriptVars.getGlobalVar("tokenValue$tokenIterator")
-        )
-        tokenIterator++
-    }
+    val token = sessionWrapper.session.getValue("token").toString()
+    logger.debug("Got authZ token from session wrapper:\ntoken = $token")
+
+    logger.debug("Adding authZ token to an Authorization request header.")
+    sessionWrapper.httpMessage.requestHeader.addHeader("Authorization", "Bearer $token")
+
+    logger.debug("Adding authZ token to a cookie named \"token\".")
+    val cookie = HtmlParameter(HtmlParameter.Type.cookie, "token", token)
+    val cookies = sessionWrapper.httpMessage.requestHeader.cookieParams
+    cookies.add(cookie)
+    sessionWrapper.httpMessage.cookieParams = cookies
 }
 
 // Called internally when a new session is required
