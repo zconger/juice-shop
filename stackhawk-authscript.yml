@@ -2,6 +2,8 @@ app:
   applicationId: ${JS_APP_ID:2bc22eb3-7a8d-4e0a-b2e2-2c3a5430ba4b}
   env: Cypress
   host: http://localhost:3000
+  autoInputVectors: true
+  autoPolicy: true
   sessionTokens:
     - JSESSIONID
     - language
