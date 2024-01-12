@@ -6,7 +6,7 @@ In this fork of the Juice Shop repo, we have added a couple of files.
  * `README_STACKHAWK.md` - This file.
  * `stackhawk.yml` - A working StackHawk scan configuration file. You should update `app.applicationId` to match your App ID for Juice Shop in your StackHawk org.
  * `stackhawk_create_user.sh` - A shell script to create the test user account, `test@test.com`.
- * `stackhawk_auth_token.sh` - A shell script to login to Juice Shop and fetch a JWT, which is used to authenticate the scanner to Juice Shop.
+ ~~* `stackhawk_auth_token.sh` - A shell script to login to Juice Shop and fetch a JWT, which is used to authenticate the scanner to Juice Shop.~~
 
 This guide assumes that you have:
  * Set up prereqs for Cypress
@@ -35,11 +35,6 @@ npm start &
 Create the test user, test@test,com:
 ```shell
 ./stackhawk_create_user.sh
-```
-
-Fetch a JWT for test@test.com and export it as JS_AUTH_TOKEN - will be used for StackHawk authenticated scanning
-```shell
-source ./stackhawk_auth_token.sh
 ```
 
 Run HawkScan
